@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Event</title>
+  <link rel="stylesheet" href="hod.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Create New Event</h2>
+    <form id="eventForm">
+      <input type="text" id="title" placeholder="Event Title" required><br>
+      <input type="date" id="date" required><br>
+      <input type="file" id="image" accept="image/*" required><br>
+      <textarea id="report" placeholder="Event Report" rows="5" required></textarea><br>
+      <button type="submit">Submit Event</button>
+    </form>
+    <button onclick="goBack()">← Cancel</button>
+  </div>
+
+  <script>
+    const deptID = localStorage.getItem("loggedInDept");
+    if (!deptID) {
+      alert("Access denied. Please log in.");
+      window.location.href = "hodlog.html";
+    }
+
+    const form = document.getElementById("eventForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const date = document.getElementById("date").value;
+      const report = document.getElementById("report").value;
+      const imageInput = document.getElementById("image");
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imageData = reader.result;
+
+        const newEvent = {
+          deptID,
+          title,
+          date,
+          report,
+          image: imageData
+        };
+
+        const existingEvents = JSON.parse(localStorage.getItem("events")) || [];
+        existingEvents.push(newEvent);
+        localStorage.setItem("events", JSON.stringify(existingEvents));
+
+        alert("Event created successfully!");
+        window.location.href = "hoddash.html";
+      };
+
+      if (imageInput.files.length > 0) {
+        reader.readAsDataURL(imageInput.files[0]);
+      } else {
+        alert("Please upload an image.");
+      }
+    });
+
+    function goBack() {
+      window.location.href = "hoddash.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HOD Dashboard</title>
+  <link rel="stylesheet" href="hod.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <h2>Welcome, HOD</h2>
+    <div class="card-grid">
+      <div class="card" onclick="goTo('uploadedEvents.html')">
+        <h3>📁 Uploaded Events</h3>
+        <p>View previously uploaded event images and reports.</p>
+      </div>
+      <div class="card" onclick="goTo('CreateEvent.html')">
+        <h3>📝 Create Event</h3>
+        <p>Upload a new event with images and report.</p>
+      </div>
+    </div>
+  </div>
+<script src="hodlog.js"></script>
+  <script>
+    const loggedInDept = localStorage.getItem('loggedInDept');
+    if (!loggedInDept) {
+      alert('Access denied. Please log in.');
+      window.location.href = 'hodlog.html';
+    }
+
+    function goTo(page) {
+      window.location.href = page;
+    }
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Uploaded Events</title>
+  <link rel="stylesheet" href="hod.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Uploaded Events</h2>
+    <div id="events-container" class="events-grid"></div>
+    <button onclick="goBack()">← Back to Dashboard</button>
+  </div>
+
+  <script>
+    const deptID = localStorage.getItem("loggedInDept");
+    if (!deptID) {
+      alert("Access denied. Please log in.");
+      window.location.href = "hodlog.html";
+    }
+
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+    const filteredEvents = events.filter(event => event.deptID === deptID);
+
+    const container = document.getElementById("events-container");
+
+    if (filteredEvents.length === 0) {
+      container.innerHTML = "<p>No events uploaded yet.</p>";
+    } else {
+      filteredEvents.forEach(event => {
+        const card = document.createElement("div");
+        card.className = "event-card";
+        card.innerHTML = `
+          <h3>${event.title}</h3>
+          <p><strong>Date:</strong> ${event.date}</p>
+          <img src="${event.image}" alt="Event Image">
+          <p><strong>Report:</strong></p>
+          <p>${event.report}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function goBack() {
+      window.location.href = "hoddash.html";
+    }
+  </script>
+</body>
+</html>
